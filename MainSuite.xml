@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Core UI tests" parallel="classes" thread-count="4" verbose="4" configfailurepolicy="continue">
+    <parameter name="proxyHost" value="${proxyHost}"/>
+    <parameter name="proxyPort" value="${proxyPort}"/>
+    <listeners>
+        <listener class-name="common.AllureListener"/>
+        <listener class-name="common.TestNGListener"/>
+    </listeners>
+
+    <test name="Init suite">
+        <classes>
+            <class name="suites.PlatformSettings"/>
+            <class name="suites.Authorization"/>
+            <class name="suites.Companies"/>
+            <class name="suites.DemandDashboard">
+                <methods>
+                    <include name="checkEmptyScannersDsp"/>
+                    <include name="createBasicRtb"/>
+                </methods>
+            </class>
+            <class name="suites.SupplyDashboard">
+                <methods>
+                    <include name="createRtbBasic"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Main suite">
+        <classes>
+            <!--Supply and Demand suites should be separated by significant number of tests
+            to prevent them from running in parallel with each other.
+            Otherwise, the Allowed DSP counter in SSP can be iterated while SSP test is running-->
+            <class name="suites.SupplyDashboard">
+                <methods>
+                    <exclude name="createRtbBasic"/>
+                </methods>
+            </class>
+            <class name="suites.Scanners"/>
+            <class name="suites.Adapters"/>
+            <!--Inventories and Demand suites should be separated by significant number
+            of tests to prevent them from running in parallel with each other.
+            Otherwise, the Blocked DSP list could be updated, while Inventories test is running-->
+            <class name="suites.Inventories"/>
+            <class name="suites.ReportAdxStatistics"/>
+            <class name="suites.ReportPublishers"/>
+            <class name="suites.ReportUser"/>
+            <class name="suites.InventoryManage"/>
+            <class name="suites.DemandDashboard">
+                <methods>
+                    <exclude name="createBasicRtb"/>
+                    <exclude name="checkEmptyScannersDsp"/>
+                </methods>
+            </class>
+            <class name="suites.AdsTxtPartners"/>
+            <class name="suites.DealsPublisher"/>
+            <class name="suites.FilterLists"/>
+            <class name="suites.UserManagement"/>
+            <class name="suites.Dashboard"/>
+        </classes>
+    </test>
+</suite>

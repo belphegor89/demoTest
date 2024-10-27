@@ -1,0 +1,10 @@
+{
+    "name": "Azure DevOps",
+    "type": "azureDevops",
+    "url": "http://example.org",
+    "buildOrder": 0,
+    "buildName": "default name",
+    "buildUrl": "https://example.org/build",
+    "reportUrl": "https://example.org/report",
+    "reportName": "default report"
+}
